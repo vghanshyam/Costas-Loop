@@ -95,3 +95,5 @@ This updates the NCO phase.
 ## 📊 IQ SamplesDiagram  in Time Domain
 
 ![Costas Loop Diagram](IQ_sample.png)
+## 📊 Constellation Diagram of Costas Loop After Lock
+![Costas Loop Diagram](Costas_BPSK_Constellation.jpg)
