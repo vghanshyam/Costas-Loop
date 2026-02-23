@@ -32,3 +32,8 @@ At the receiver, due to oscillator mismatch:
 ---
 
 👉 The **Costas Loop** locks onto the carrier and removes this frequency and phase offset.
+---
+
+## 📊 Costas Loop Block Diagram
+
+![Costas Loop Diagram](costas_loop.svg)
