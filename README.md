@@ -90,4 +90,8 @@ This updates the NCO phase.
 ### 🟢 After Lock
 - BPSK symbols align on the ±1 axis  
 - Q component ≈ 0  
-- Stable demodulation achieved  
+- Stable demodulation achieved
+- 
+## 📊 IQ SamplesDiagram  in Time Domain
+
+![Costas Loop Diagram](IQ_sample.png)
