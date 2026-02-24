@@ -96,4 +96,4 @@ This updates the NCO phase.
 
 ![Costas Loop Diagram](IQ_sample.png)
 ## 📊 Constellation Diagram of Costas Loop After Lock
-![Costas Loop Diagram](costas_conste.PNJ)
+![Costas Loop Diagram](costas_conste.PNG)
