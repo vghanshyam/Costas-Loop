@@ -97,3 +97,83 @@ This updates the NCO phase.
 ![Costas Loop Diagram](IQ_sample.png)
 ## 📊 Constellation Diagram of Costas Loop After Lock
 ![Costas Loop Diagram](costas_conste.PNG)
+## 🐍 Python Implementation: Costas Loop (BPSK)
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# ==============================
+# PARAMETERS
+# ==============================
+input_file = "Symbol_Sync_out_IQ.bin"
+output_file = "Costas_out_IQ.bin"
+fs = 1e6   # sampling frequency (set correctly!)
+
+alpha = 0.132
+beta = 0.00932
+
+# ==============================
+# READ COMPLEX FLOAT32 FILE
+# ==============================
+
+# Read raw float32 data
+raw = np.fromfile(input_file, dtype=np.float32)
+
+# Convert interleaved I/Q → complex
+samples = raw[0::2] + 1j * raw[1::2]
+samples = samples.astype(np.complex64)
+
+N = len(samples)
+
+# ==============================
+# COSTAS LOOP
+# ==============================
+
+phase = 0.0
+freq = 0.0
+
+out = np.zeros(N, dtype=np.complex64)
+freq_log = []
+
+for i in range(N):
+    out[i] = samples[i] * np.exp(-1j * phase)
+
+    # Costas loop error (BPSK)
+    error = np.real(out[i]) * np.imag(out[i])
+
+    freq += beta * error
+    freq_log.append(freq * fs / (2*np.pi))
+
+    phase += freq + alpha * error
+
+    # Wrap phase between 0 and 2π
+    if phase >= 2*np.pi:
+        phase -= 2*np.pi
+    elif phase < 0:
+        phase += 2*np.pi
+
+# ==============================
+# SAVE OUTPUT TO FILE
+# ==============================
+
+# Convert complex → interleaved float32
+output_interleaved = np.empty(2 * N, dtype=np.float32)
+output_interleaved[0::2] = np.real(out)
+output_interleaved[1::2] = np.imag(out)
+
+output_interleaved.tofile(output_file)
+
+print("Processing complete.")
+print("Output saved to:", output_file)
+
+# ==============================
+# PLOT
+# ==============================
+
+plt.plot(freq_log, '.-')
+plt.title("Frequency Estimate (Hz)")
+plt.xlabel("Sample")
+plt.ylabel("Frequency (Hz)")
+plt.grid()
+plt.show()
